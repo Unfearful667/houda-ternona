@@ -15,16 +15,21 @@
             flex-direction: column;
             text-align: center;
             overflow: hidden;
+            padding: 10px;
         }
         h1 {
             color: white;
             text-shadow: 2px 2px 5px red;
+            font-size: 24px;
         }
         .buttons {
             margin-top: 20px;
+            position: relative;
+            display: flex;
+            gap: 20px;
         }
         button {
-            font-size: 20px;
+            font-size: 18px;
             padding: 10px 20px;
             border: none;
             cursor: pointer;
@@ -43,7 +48,7 @@
         .message {
             display: none;
             margin-top: 20px;
-            font-size: 20px;
+            font-size: 18px;
             color: white;
             text-shadow: 1px 1px 3px red;
         }
@@ -51,5 +56,131 @@
             position: absolute;
             color: red;
             font-size: 24px;
-            animation: float 2
+            animation: float 2s linear infinite;
+        }
+        @keyframes float {
+            0% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(-100px); opacity: 0; }
+        }
 
+        /* Slideshow Styles */
+        .slideshow-container {
+            display: none;
+            position: relative;
+            width: 90%;
+            max-width: 400px;
+            height: auto;
+            margin-top: 20px;
+        }
+        .slide {
+            width: 100%;
+            height: auto;
+            display: none;
+            border-radius: 10px;
+        }
+        .active {
+            display: block;
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 600px) {
+            body {
+                padding: 20px;
+            }
+            h1 {
+                font-size: 20px;
+            }
+            button {
+                font-size: 16px;
+                padding: 8px 15px;
+            }
+            .message {
+                font-size: 16px;
+            }
+            .slideshow-container {
+                max-width: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Will you be my Valentine, Houda? ❤️</h1>
+    <div class="buttons">
+        <button id="yes">Yes</button>
+        <button id="no">No</button>
+    </div>
+    <div class="message" id="message">
+        I miss you way too much, your touch, your presence, your laughs, your smile, everything about you. O kanbghik ❤️
+    </div>
+    
+    <!-- Slideshow Container -->
+    <div class="slideshow-container" id="slideshow">
+        <img class="slide" src="us1.jpg" alt="Memory 1">
+        <img class="slide" src="us2.jpg" alt="Memory 2">
+        <img class="slide" src="us3.jpg" alt="Memory 3">
+        <img class="slide" src="us4.jpg" alt="Memory 4">
+        <img class="slide" src="us5.jpg" alt="Memory 5">
+        <img class="slide" src="us6.jpg" alt="Memory 6">
+    </div>
+
+    <div id="player"></div>
+
+    <script>
+        const noButton = document.getElementById("no");
+        const yesButton = document.getElementById("yes");
+        const message = document.getElementById("message");
+        const slideshow = document.getElementById("slideshow");
+        const slides = document.querySelectorAll(".slide");
+        let slideIndex = 0;
+
+        // Prevent "No" button from moving off-screen on mobile
+        noButton.addEventListener("mouseover", function() {
+            let x = Math.random() * (window.innerWidth - noButton.offsetWidth - 20);
+            let y = Math.random() * (window.innerHeight - noButton.offsetHeight - 20);
+            x = Math.max(10, Math.min(x, window.innerWidth - noButton.offsetWidth - 10));
+            y = Math.max(10, Math.min(y, window.innerHeight - noButton.offsetHeight - 10));
+            noButton.style.left = `${x}px`;
+            noButton.style.top = `${y}px`;
+        });
+
+        yesButton.addEventListener("click", function() {
+            message.style.display = "block";
+            playSong();
+            for (let i = 0; i < 20; i++) {
+                createHeart();
+            }
+
+            // Show slideshow after text appears
+            setTimeout(() => {
+                slideshow.style.display = "block";
+                startSlideshow();
+            }, 2000);
+        });
+
+        function createHeart() {
+            const heart = document.createElement("div");
+            heart.innerHTML = "❤️";
+            heart.classList.add("heart");
+            document.body.appendChild(heart);
+            heart.style.left = Math.random() * window.innerWidth + "px";
+            heart.style.top = window.innerHeight + "px";
+            setTimeout(() => heart.remove(), 2000);
+        }
+
+        function playSong() {
+            const player = document.getElementById("player");
+            player.innerHTML = '<iframe width="0" height="0" src="https://www.youtube.com/embed/JFhiu5k8z90?autoplay=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
+        }
+
+        function startSlideshow() {
+            slides[slideIndex].classList.add("active");
+
+            setInterval(() => {
+                slides[slideIndex].classList.remove("active");
+                slideIndex = (slideIndex + 1) % slides.length;
+                slides[slideIndex].classList.add("active");
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
