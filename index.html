@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Be My Valentine?</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: pink;
+            font-family: Arial, sans-serif;
+            flex-direction: column;
+            text-align: center;
+            overflow: hidden;
+        }
+        h1 {
+            color: white;
+            text-shadow: 2px 2px 5px red;
+        }
+        .buttons {
+            margin-top: 20px;
+        }
+        button {
+            font-size: 20px;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: 0.3s;
+        }
+        #yes {
+            background-color: red;
+            color: white;
+        }
+        #no {
+            background-color: white;
+            color: red;
+            position: absolute;
+        }
+        .message {
+            display: none;
+            margin-top: 20px;
+            font-size: 20px;
+            color: white;
+            text-shadow: 1px 1px 3px red;
+        }
+        .heart {
+            position: absolute;
+            color: red;
+            font-size: 24px;
+            animation: float 2s linear infinite;
+        }
+        @keyframes float {
+            0% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(-100px); opacity: 0; }
+        }
+        .slideshow-container {
+            display: none;
+            position: relative;
+            width: 80%;
+            max-width: 600px;
+            margin-top: 20px;
+        }
+        .slide {
+            display: none;
+            width: 100%;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Will you be my Valentine, Houda? ❤️</h1>
+    <div class="buttons">
+        <button id="yes">Yes</button>
+        <button id="no">No</button>
+    </div>
+    <div class="message" id="message">I miss you way too much, your touch, your presence, your laughs, your smile, everything about you. O kanbghik ❤️</div>
+    <div id="player"></div>
+    
+    <div class="slideshow-container" id="slideshow">
+        <img class="slide" src="us1.jpg">
+        <img class="slide" src="us2.jpg">
+        <img class="slide" src="us3.jpg">
+        <img class="slide" src="us4.jpg">
+        <img class="slide" src="us5.jpg">
+        <img class="slide" src="us6.jpg">
+    </div>
+
+    <script>
+        const noButton = document.getElementById("no");
+        const yesButton = document.getElementById("yes");
+        const message = document.getElementById("message");
+        const slideshow = document.getElementById("slideshow");
+        let slideIndex = 0;
+
+        noButton.addEventListener("mouseover", function() {
+            const x = Math.random() * (window.innerWidth - noButton.offsetWidth);
+            const y = Math.random() * (window.innerHeight - noButton.offsetHeight);
+            noButton.style.left = `${x}px`;
+            noButton.style.top = `${y}px`;
+        });
+
+        yesButton.addEventListener("click", function() {
+            message.style.display = "block";
+            playSong();
+            for (let i = 0; i < 20; i++) {
+                createHeart();
+            }
+            setTimeout(() => {
+                slideshow.style.display = "block";
+                startSlideshow();
+            }, 2000);
+        });
+
+        function createHeart() {
+            const heart = document.createElement("div");
+            heart.innerHTML = "❤️";
+            heart.classList.add("heart");
+            document.body.appendChild(heart);
+            heart.style.left = Math.random() * window.innerWidth + "px";
+            heart.style.top = window.innerHeight + "px";
+            setTimeout(() => heart.remove(), 2000);
+        }
+
+        function playSong() {
+            const player = document.getElementById("player");
+            player.innerHTML = '<iframe width="0" height="0" src="https://www.youtube.com/embed/JFhiu5k8z90?autoplay=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
+        }
+
+        function startSlideshow() {
+            let slides = document.getElementsByClassName("slide");
+            for (let i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+            slideIndex++;
+            if (slideIndex > slides.length) { slideIndex = 1; }
+            slides[slideIndex - 1].style.display = "block";
+            setTimeout(startSlideshow, 2000);
+        }
+    </script>
+</body>
+</html>
